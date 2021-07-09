@@ -112,9 +112,9 @@ def train_for_epoch(parser, train_data, dev_data, optimizer, loss_func, batch_si
 
             loss = loss_func(logits, train_y)
             loss.backward()
-            
+
             optimizer.step()
-                        
+
             ### END YOUR CODE
             prog.update(1)
             loss_meter.update(loss.item())
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     print(80 * "=")
     print("TRAINING")
     print(80 * "=")
-    output_dir = "results/{:%Y%m%d_%H%M%S}/".format(datetime.now())
+    output_dir = f"../../temps/parsing/"
     output_path = output_dir + "model.weights"
 
     if not os.path.exists(output_dir):
