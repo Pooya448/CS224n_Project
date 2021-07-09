@@ -20,11 +20,12 @@ data = [x for x in raw_data if len(x) > 1]
 n = len(data)
 split = np.array_split(data, 5)
 
-sizes = [n/10, n/7, n/3, n/2, n/1]
+print(n)
+sizes = [n/100, n/70, n/30, n/20, 11737]
 results = []
 best_percentage = -1
 best_size = -1
-best_i -1
+best_i = -1
 
 for i, size in enumerate(sizes):
     temp_copy = split.copy()
@@ -42,7 +43,7 @@ for i, size in enumerate(sizes):
     token_count = 0
     unk_count = 0
     for s in test_data:
-        encoded = sp.encode_as_ids(sent)
+        encoded = sp.encode_as_ids(s)
 
         token_count += len(encoded)
         unk_count += encoded.count(0)
@@ -77,3 +78,5 @@ if not os.path.exists(model_dir):
 
 os.system(f"cp m{best_i}.model ../../models/tokenization/tokenization.model")
 os.system(f"cp m{best_i}.vocab ../../models/tokenization/tokenization.vocab")
+
+print(f'Best unk percentage -> Size:{best_size}')
