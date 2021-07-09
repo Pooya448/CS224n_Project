@@ -17,6 +17,9 @@ import sys
 assert sys.version_info[0] == 3
 assert sys.version_info[1] >= 5
 
+import pandas as pd
+from pandas.plotting import table
+
 from sklearn.metrics.pairwise import cosine_similarity
 def get_cosine_similarity(v1, v2):
     return cosine_similarity(v1.reshape(1, -1), v2.reshape(1, -1))[0][0]
