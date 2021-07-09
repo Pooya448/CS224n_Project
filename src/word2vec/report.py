@@ -35,8 +35,8 @@ tokens = {}
 for person in ["phoebe", "chandler"]:
 
     dataset = FriendsDataset(person=person)
-    tokens = dataset.tokens()
-    tokens[person] = tokens
+    ts = dataset.tokens()
+    tokens[person] = ts
     nWords = len(tokens)
 
     model_state_path = f"../../models/word2vec/{person}.word2vec.pickle"
@@ -50,8 +50,8 @@ for person in ["phoebe", "chandler"]:
 
 l1_tokens = list(tokens['phoebe'].keys())
 l2_tokens = list(tokens['chandler'].keys())
-common_tokens = list(set.intersection(l1_tokens, l2_tokens))
-
+common_tokens = list(set.intersection(set(l1_tokens), set(l2_tokens)))
+print(f"Number of common words: {len(common_tokens)}")
 words_cmp = []
 sim_scores = []
 for word in common_tokens:
@@ -66,12 +66,22 @@ for word in common_tokens:
     words_cmp.append(word)
     sim_scores.append(sim_score)
 
-df = pd.DataFrame( { "Word": words_cmp, "Cosine Similarity": sim_scores })
+assert len(sim_scores) == len(words_cmp)
 
-ax = plt.subplot(111, frame_on=False)
+n = (len(words_cmp) // 20) + 1
+
+ax = plt.subplot(frame_on=False)
 ax.xaxis.set_visible(False)
 ax.yaxis.set_visible(False)
 
-table(ax, df, loc='center')
-x = plt.gcf()
-x.savefig('../../reports/word2vec/common_words.png')
+for i in range(n):
+
+    w = words_cmp[i*20 : (i+1)*20].copy()
+    s = sim_scores[i*20 : (i+1)*20].copy()
+
+    df = pd.DataFrame( { "Word": w, "Cosine Similarity": s })
+
+    table(ax, df, loc='center')
+    x = plt.gcf()
+    x.savefig(f'../../reports/word2vec/common_words_{i}.png')
+
