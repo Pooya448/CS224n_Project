@@ -23,9 +23,9 @@ split = np.array_split(data, 5)
 print(n)
 sizes = [n/100, n/70, n/30, n/20, 11737]
 results = []
-best_percentage = -1
-best_size = -1
-best_i = -1
+best_percentage = 100
+best_size = 100
+best_i = 100
 
 for i, size in enumerate(sizes):
     temp_copy = split.copy()
@@ -50,7 +50,7 @@ for i, size in enumerate(sizes):
 
     percentage = (float(unk_count) / token_count) * 100
 
-    if percentage > best_percentage:
+    if percentage < best_percentage:
         best_percentage = percentage
         best_size = size
         best_i = i
