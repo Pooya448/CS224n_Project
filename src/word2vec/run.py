@@ -44,8 +44,7 @@ wVectors = {}
 pTokens = {}
 
 for person in ["phoebe", "chandler"]:
-    # Reset the random seed to make sure that everyone gets the same results
-    random.seed(314)
+
     dataset = FriendsDataset(person=person)
     tokens = dataset.tokens()
     pTokens[person] = tokens
@@ -55,11 +54,7 @@ for person in ["phoebe", "chandler"]:
     dimVectors = 10
 
     # Context size
-    C = 5
-
-    # Reset the random seed to make sure that everyone gets the same results
-    random.seed(31415)
-    np.random.seed(9265)
+    C = 10
 
     startTime=time.time()
     wordVectors = np.concatenate(
@@ -69,9 +64,8 @@ for person in ["phoebe", "chandler"]:
     wordVectors = sgd(
         lambda vec: word2vec_sgd_wrapper(skipgram, tokens, vec, dataset, C,
             negSamplingLossAndGradient),
-        wordVectors, 0.3, 40000, None, True, PRINT_EVERY=10, label=person)
-    # Note that normalization is not called here. This is not a bug,
-    # normalizing during training loses the notion of length.
+        wordVectors, 0.3, 5000, None, True, PRINT_EVERY=10, label=person)
+
 
     print("sanity check: cost at convergence should be around or below 10")
     print("training took %d seconds" % (time.time() - startTime))
