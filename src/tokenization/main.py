@@ -35,7 +35,7 @@ for i, size in enumerate(sizes):
     with open("../../temps/tokenization/train.txt", 'w+') as f:
         f.write('\n'.join(train_data))
 
-    spm.SentencePieceTrainer.train(f'--input=../../temps/tokenization/train.txt --model_prefix=m{i} --vocab_size={size} --model_type=word'.format(i, sizes[i]))
+    spm.SentencePieceTrainer.train(f'--input=../../temps/tokenization/train.txt --model_prefix=../../temps/tokenization/m{i} --vocab_size={size} --model_type=word'.format(i, sizes[i]))
 
     sp = spm.SentencePieceProcessor()
     sp.load(f'm{i}.model')
@@ -76,7 +76,7 @@ model_dir = "../../models/tokenization/"
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
 
-os.system(f"cp m{best_i}.model ../../models/tokenization/tokenization.model")
-os.system(f"cp m{best_i}.vocab ../../models/tokenization/tokenization.vocab")
+os.system(f"cp ../../temps/tokenization/m{best_i}.model ../../models/tokenization/tokenization.model")
+os.system(f"cp ../../temps/tokenization/m{best_i}.vocab ../../models/tokenization/tokenization.vocab")
 
 print(f'Best unk percentage -> Size:{best_size}')

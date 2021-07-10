@@ -30,23 +30,6 @@ def train(dataset, model, args, device):
 
             print({ 'epoch': epoch, 'batch': batch, 'loss': loss.item() })
 
-def predict(dataset, model, text, next_words=100):
-    model.eval()
-
-    words = text.split(' ')
-    state_h, state_c = model.init_state(len(words))
-
-    for i in range(0, next_words):
-        x = torch.tensor([[dataset.word_to_index[w] for w in words[i:]]])
-        y_pred, (state_h, state_c) = model(x, (state_h, state_c))
-
-        last_word_logits = y_pred[0][-1]
-        p = torch.nn.functional.softmax(last_word_logits, dim=0).detach().numpy()
-        word_index = np.random.choice(len(last_word_logits), p=p)
-        words.append(dataset.index_to_word[word_index])
-
-    return words
-
 if __name__ == '__main__':
 
     if torch.cuda.is_available():
@@ -62,9 +45,13 @@ if __name__ == '__main__':
     parser.add_argument('--sequence-length', type=int, default=15)
     args = parser.parse_args()
 
+    model_dir = f"../../models/language_model/"
+    if not os.path.exists(model_dir):
+        os.makedirs(model_dir)
+
     dataset = Dataset(args, device)
     model = Model(dataset, device)
     model.to(device)
 
     train(dataset, model, args, device)
-    print(predict(dataset, model, text='Knock knock. Whos there?'))
+    torch.save(model.state_dict(), model_dir + f"{args.person}.language_model.pth")
