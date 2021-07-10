@@ -6,6 +6,8 @@ import os
 import string
 import torch
 import sys
+from sklearn.model_selection import train_test_split
+from datasets import load_dataset
 from transformers import Trainer, TrainingArguments
 from transformers import DataCollatorForLanguageModeling
 from transformers import AutoTokenizer
@@ -13,7 +15,8 @@ from transformers import AutoModelForMaskedLM, AutoModelForCausalLM
 import math
 
 def tokenize_function(examples):
-        return tokenizer(examples["text"])
+    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, use_fast=True)
+    return tokenizer(examples["text"])
 
 def group_texts(examples):
     # Concatenate all texts.
@@ -30,7 +33,7 @@ def group_texts(examples):
     result["labels"] = result["input_ids"].copy()
     return result
 
-def train(data, path, person):
+def train(dataset, path):
 
     block_size = 128
     model_checkpoint = "distilgpt2"
@@ -48,7 +51,10 @@ def train(data, path, person):
     model = AutoModelForCausalLM.from_pretrained(model_checkpoint)
 
     training_args = TrainingArguments(
-        "test-clm",
+        path,
+        do_train= True,
+        do_eval = True,
+        num_train_epochs = 5,
         evaluation_strategy = "epoch",
         learning_rate=2e-5,
         weight_decay=0.01,
@@ -68,3 +74,5 @@ def train(data, path, person):
     eval_results = trainer.evaluate()
     perplexity= math.exp(eval_results['eval_loss'])
     print(f"Perplexity: {perplexity:.2f}")
+
+    return model, perplexity, tokenizer
