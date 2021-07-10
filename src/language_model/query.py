@@ -5,6 +5,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader
 from model import Model
 from dataset import Dataset
+import os
 
 def predict(dataset, model, text, next_words=100):
     model.eval()
@@ -46,6 +47,6 @@ if __name__ == '__main__':
         os.makedirs(report_dir)
 
     with open(report_dir + f"report_{args.person}.txt", "a+") as fp:
-        gen_text = ' '.join(predict(dataset, model, text=args.input, next_words=args.length))
+        gen_text = ' '.join(predict(dataset, model, text=args.input, next_words=args.genlength))
         fp.write(str(gen_text))
         fp.write('\n')

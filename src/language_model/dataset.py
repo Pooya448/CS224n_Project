@@ -20,7 +20,7 @@ class Dataset(torch.utils.data.Dataset):
         self.words_indexes = [self.word_to_index[w] for w in self.words]
 
     def load_words(self):
-        with open(f'../../data/sentence_tokenize/{upper(self.person)}.txt', 'r') as f:
+        with open(f'../../data/sentence_tokenize/{str.upper(self.person)}.txt', 'r') as f:
             train_sents = [line.strip() for line in f.readlines()]
         train_tokens = ' '.join(train_sents).split(' ')
         return train_tokens

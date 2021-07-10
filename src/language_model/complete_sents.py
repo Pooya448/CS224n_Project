@@ -2,11 +2,10 @@ import os
 
 start_sents = [
     'coffee',
-    'smelly cat',
+    'smelly',
     'monica',
     'joey',
-    'homeless',
-    'paleontology',
+    'home',
 ]
 person = ['phoebe', 'chandler']
 
