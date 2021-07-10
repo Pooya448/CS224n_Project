@@ -18,6 +18,7 @@ for person in ['CHANDLER', 'PHOEBE']:
     data_dir = f"../../data/fine_tuning/"
     if os.path.exists(data_dir):
         os.system(f"rm -rf {data_dir}")
+        os.makedirs(data_dir)
     else:
         os.makedirs(data_dir)
 
