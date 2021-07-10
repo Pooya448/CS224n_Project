@@ -11,6 +11,7 @@ from transformers import Trainer, TrainingArguments
 from transformers import DataCollatorForLanguageModeling
 from transformers import AutoTokenizer
 from transformers import AutoModelForMaskedLM, AutoModelForCausalLM
+from transformers import pipeline
 from casual_lm import train
 import math
 
@@ -62,7 +63,7 @@ for person in ['chandler', 'phoebe']:
         f.write(f"{person} -> perplexity = {str(perplexity)}")
         f.write('\n')
 
-    text_generation = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
+    text_generation = pipeline("text-generation", model=model, tokenizer=tok, device=0)
 
     with open(report_dir + f"generated_{person}.txt", "w+") as f:
         for s in start_sents:

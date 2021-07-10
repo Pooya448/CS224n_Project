@@ -15,10 +15,14 @@ from transformers import AutoModelForMaskedLM, AutoModelForCausalLM
 import math
 
 def tokenize_function(examples):
+    block_size = 128
+    model_checkpoint = "distilgpt2"
     tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, use_fast=True)
     return tokenizer(examples["text"])
 
 def group_texts(examples):
+    block_size = 128
+
     # Concatenate all texts.
     concatenated_examples = {k: sum(examples[k], []) for k in examples.keys()}
     total_length = len(concatenated_examples[list(examples.keys())[0]])
