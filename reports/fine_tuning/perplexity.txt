@@ -1,4 +1,2 @@
-chandler -> perplexity = 44.4506873999819
-chandler -> perplexity = 42.68137839769039
 chandler -> perplexity = 43.57639605244313
 phoebe -> perplexity = 40.59154832036498
