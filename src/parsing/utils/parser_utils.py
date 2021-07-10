@@ -269,7 +269,6 @@ class Parser(object):
                 prog.update(i + 1)
                 print(i + 1)
                 print(UAS_manual / tokens_manual)
-        print(f"Len all tok = {len(all_tokens)}")
         UAS /= all_tokens
         return UAS, dependencies
 
