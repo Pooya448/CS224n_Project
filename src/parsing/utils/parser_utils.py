@@ -251,6 +251,7 @@ class Parser(object):
         UAS = all_tokens = 0.0
         with tqdm(total=len(dataset)) as prog:
             for i, ex in enumerate(dataset):
+                UAS_manual = tokens_manual = 0
                 head = [-1] * len(ex['word'])
                 for h, t, in dependencies[i]:
                     head[t] = h
@@ -260,8 +261,15 @@ class Parser(object):
                         pos_str = self.id2tok[pos][len(P_PREFIX):]
                         if (self.with_punct) or (not punct(self.language, pos_str)):
                             UAS += 1 if pred_h == gold_h else 0
+                            UAS_manual += 1 if pred_h == gold_h else 0
                             all_tokens += 1
+                            tokens_manual += 1
+
+                            print(f"Ground Truth = {pred_h}, Predicted = {gold_h}")
                 prog.update(i + 1)
+                print(i + 1)
+                print(UAS_manual / tokens_manual)
+        print(f"Len all tok = {len(all_tokens)}")
         UAS /= all_tokens
         return UAS, dependencies
 
@@ -287,7 +295,7 @@ class ModelWrapper(object):
         return pred
 
 
-def read_conll(in_file, lowercase=False, max_example=None):
+def read_conll(in_file, lowercase=True, max_example=None):
     examples = []
     with open(in_file) as f:
         word, pos, head, label = [], [], [], []
