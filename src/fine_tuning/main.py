@@ -40,7 +40,7 @@ for person in ['chandler', 'phoebe']:
         data_paths["validation"] = dev_path
 
 
-    extension = data_path.split(".")[-1]
+    extension = train_path.split(".")[-1]
     if extension == "txt":
         extension = "text"
 
